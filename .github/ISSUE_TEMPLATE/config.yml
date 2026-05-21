@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security issue
+    url: https://github.com/ameyypawar/gitfix-docs/blob/main/SECURITY.md
+    about: Please email security issues, don't file them publicly.
+  - name: Email support
+    url: mailto:ameypawar1237@gmail.com
+    about: For anything that isn't a public bug or feature request.
