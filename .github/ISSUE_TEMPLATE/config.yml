@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Security issue
-    url: https://github.com/ameyypawar/gitfix-docs/blob/main/SECURITY.md
-    about: Please email security issues, don't file them publicly.
-  - name: Email support
-    url: mailto:ameypawar1237@gmail.com
-    about: For anything that isn't a public bug or feature request.
+  - name: Read the FAQ first
+    url: https://github.com/ameyypawar/gitfix-docs/blob/main/faq.md
+    about: Most common questions are already answered.
+  - name: Report a product bug (not a docs bug)
+    url: https://github.com/ameyypawar/gfix/issues/new/choose
+    about: If gfix itself is broken, file there instead.
+  - name: Email for licensing or security questions
+    url: mailto:ameyap007aaa@gmail.com
+    about: License questions, source access requests, security disclosures.
