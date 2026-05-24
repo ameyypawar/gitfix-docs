@@ -1,0 +1,12 @@
+gfix end-user license — v0.1.0-alpha
+
+Copyright © 2026 Amey Pawar. All rights reserved.
+
+You may install and use this binary on any number of machines for any
+purpose, including commercial use. You may not (a) reverse-engineer or
+attempt to extract source code from the binary, (b) redistribute the
+binary or any portion of it, (c) remove this notice, or (d) use it to
+develop a competing product. This software is provided as-is, with no
+warranty. A formal EULA will supersede this notice before v1.0.
+
+For licensing questions: ameyap007aaa@gmail.com

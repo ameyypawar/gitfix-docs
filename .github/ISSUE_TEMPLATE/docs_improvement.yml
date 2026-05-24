@@ -1,0 +1,33 @@
+name: Docs improvement
+description: Something is missing, unclear, or could be better explained.
+title: "[docs] "
+labels: ["docs", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For gaps and clarity issues. If something is factually wrong, file a "Docs bug" instead.
+
+  - type: textarea
+    id: whats-missing
+    attributes:
+      label: What's missing or could be clearer
+      description: Be specific. "The docs are confusing" is not actionable; "the section on MCP sampling doesn't explain how budget interacts with cache hits" is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: where-looked
+    attributes:
+      label: Where would you have looked for this info first
+      description: Optional. Which page or section did you check before realizing it wasn't there.
+    validations:
+      required: false
+
+  - type: textarea
+    id: your-context
+    attributes:
+      label: Your context
+      description: Optional. What brought you to gitfix-docs — evaluating gfix, debugging an install, exploring MCP, etc.
+    validations:
+      required: false
