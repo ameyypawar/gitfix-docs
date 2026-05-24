@@ -1,123 +1,97 @@
-<p align="center">
-  <img src="assets/logo.png" alt="gitfix" width="96" />
-</p>
+# gfix
 
-<h1 align="center">gitfix</h1>
-
-<p align="center">
-  Resolve Git merge conflicts by intent, not by line.
-</p>
-
-<p align="center">
-  <em>A VS Code extension for the conflicts that aren't really conflicts.</em>
-</p>
-
-<p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=ameyypawar.gitfix">
-    <img src="https://img.shields.io/visual-studio-marketplace/v/ameyypawar.gitfix?label=VS%20Code%20Marketplace" alt="VS Code Marketplace" />
-  </a>
-  <a href="https://gitfix.pro">
-    <img src="https://img.shields.io/badge/site-gitfix.pro-1f6f5c" alt="gitfix.pro" />
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-555" alt="MIT" />
-  </a>
-</p>
-
-<p align="center">
-  <img src="assets/demo.gif" alt="gitfix resolving a merge conflict in VS Code" />
-</p>
-
----
-
-## Why I built it
-
-I lost too many afternoons to merge conflicts where both sides were obviously correct and the diff just couldn't tell. Existing tools resolve text. I wanted one that resolved the change — the thing the commit was trying to do — and showed me its work before touching my files. So I built gitfix for myself, then for everyone else stuck doing the same chore.
-
-## What it does
-
-- Resolves Git merge conflicts by understanding what each side was trying to change, not just which lines moved.
-- Explains every resolution in plain English before you accept it.
-- Never writes to your working tree without an explicit click. Refuses to touch staged or committed files on its own.
-- Works in any Git repository you open in VS Code — monorepos, submodules, detached HEADs, rebases, cherry-picks.
-- Stays out of the way when a conflict is trivial. Hands it to you, untouched, when it isn't sure.
-
-## See it in action
-
-<p align="center">
-  <img src="assets/screenshot-conflict.png" alt="A conflicted file opened in gitfix" />
-  <br />
-  <em>A real conflict, picked up automatically when the merge fails.</em>
-</p>
-
-<p align="center">
-  <img src="assets/screenshot-resolved.png" alt="gitfix proposing a resolution with an explanation" />
-  <br />
-  <em>Proposed resolution with a one-paragraph rationale. Accept, edit, or reject.</em>
-</p>
+A merge conflict resolver for the agentic-coding era. Local CLI + MCP server; resolves N-way merges with a deterministic floor (text + Mergiraf) and an AI ceiling (host-provided sampling, or BYO-key OpenAI / Anthropic / Gemini / Ollama).
 
 ## Install
 
-From the VS Code Marketplace:
+Three install paths, same binary. Pick whichever fits your setup.
 
-> [marketplace.visualstudio.com/items?itemName=ameyypawar.gitfix](https://marketplace.visualstudio.com/items?itemName=ameyypawar.gitfix)
-
-Or from the command palette:
-
-```
-ext install ameyypawar.gitfix
+```sh
+brew install ameyypawar/gfix/gfix
 ```
 
-## Quick start
+```sh
+curl -fsSL https://gitfix.pro/install | sh
+```
 
-1. Run your merge, rebase, or cherry-pick as normal. When it stops on a conflict, open the conflicted file.
-2. Open the **gitfix** panel (Command Palette → `gitfix: Resolve conflicts in this file`).
-3. Review each proposed resolution. Accept, edit, or reject. Nothing is written until you say so.
+```sh
+npm install -g @gitfix/cli
+```
 
-That's it. There's no project to configure, no flags, no API key on the free tier.
+Verify:
 
-## FAQ
+```sh
+gfix --version
+```
 
-**Does it modify my repo on its own?**
-No. gitfix never writes to disk, stages, or commits without an explicit action from you. Closing the panel reverts the preview.
+## 30-second quickstart
 
-**Does it work offline?**
-The core resolution flow requires a network connection. A small set of trivial conflict types resolves locally; everything else needs the gitfix service.
+Wire `gfix` into Claude Code as an MCP server (cross-directory, user-scope):
 
-**Is it free?**
-Yes, for individual use, with generous limits. Paid plans unlock team features and higher volume. Pricing lives at [gitfix.pro/pricing](https://gitfix.pro/pricing).
+```sh
+claude mcp add --scope user -- gfix /opt/homebrew/bin/gfix mcp
+```
 
-**Does my code leave my machine?**
-Only the minimum needed to resolve the specific conflict you ask about — and only when you click Resolve. Nothing is stored, nothing is used for training. Details in [Privacy](#privacy).
+Then from any chat in any repo:
 
-**Does it support Mergiraf / Mergify / [tool]?**
-gitfix is the layer above text-diff tools. If you already use a syntactic merger you're happy with, gitfix sits on top for the conflicts it can't handle. They compose fine.
+> Use gfix to merge feat/auth and feat/billing into main.
 
-**Which languages does it understand?**
-Anything you can put in a Git repo. Quality is highest in mainstream languages today (TypeScript, Python, Go, Rust, Java, C#, Swift, Kotlin); the rest is improving steadily.
+The agent calls `gitfix_merge_preview`, gets back the conflict list, walks each one with `gitfix_conflict_get` + `gitfix_conflict_resolve`, then `gitfix_merge_apply` finalizes. Every accepted resolution lands in `refs/gitfix/rerere/<hash>` so the same conflict on the next branch resolves locally without an AI call.
 
-## Privacy
+Prefer the shell? Standalone CLI dispatch (`gfix merge feat/a feat/b`) lands in v0.1.0-alpha.2. Today's supported entry point is the MCP server.
 
-When you ask gitfix to resolve a specific conflict, the conflicting hunk and the immediate surrounding context are sent to the gitfix service over TLS, used to produce a resolution, and discarded. Nothing is retained, logged beyond short-lived diagnostics, or used to train any model. Full policy: [gitfix.pro/privacy](https://gitfix.pro/privacy).
+Full walkthrough: [setup.md](setup.md).
 
-## Roadmap
+## Why is the source private?
 
-- Resolve conflicts across renamed and moved files without losing intent.
-- Bulk-resolve a whole merge in one review pass, file by file.
-- A pre-merge mode that flags conflicts that *will* happen before you start the merge.
-- Better support for lockfiles, generated code, and notebook formats.
-- A CLI for CI use.
+`gfix` is a one-developer indie product in alpha. Closed source during the brand-formation window protects against fork-and-flip while the design surface is still moving fast. The 5-line EULA in [LICENSE.txt](LICENSE.txt) lets you install on any number of machines for any purpose including commercial use; you just can't redistribute the binary or reverse-engineer it. Pricing is free during alpha; the pricing decision is deferred to v1.0.
 
-## Changelog
+If "closed-source binary" is a deal-breaker for your environment (compliance review, security audit, regulated industry), source access on request to **ameyap007aaa@gmail.com** with a one-paragraph use case. For most users, the audit refs (see below) are the trust-substitute for source visibility.
 
-See [CHANGELOG.md](CHANGELOG.md).
+## What gfix does well
 
-## Support
+- **Every merge leaves a pushable, immutable audit ref.** `refs/gitfix/audit/<merge_id>` is a synthetic git commit whose tree holds `audit.json` with the full final merge state. Inspect with `git show`. Share with `git push origin refs/gitfix/audit/*`. gfix never pushes — you do.
+- **Accepted resolutions cached + replayed across machines.** `refs/gitfix/rerere/<blake3>` stores every accepted resolution as a content-addressed synthetic commit. Push to any git remote (GitHub, bare, self-hosted). Your teammate's `gfix` on the same conflict triple replays your answer in <100ms with zero AI calls.
+- **Deterministic floor that never regresses.** Text merge -> Mergiraf subprocess -> AI. Mergiraf handles structural merges (TypeScript signature changes, Java method bodies, etc.) before AI is ever asked. The deterministic floor is the product; the AI is an accelerant.
+- **Honest about the AI ceiling.** Independent research (merde.ai) puts LLM resolution of complex semantic conflicts around ~50%. gfix never pretends otherwise. Suggestions come with rationale and confidence scores; nothing is auto-applied. Low-confidence suggestions are surfaced as low-confidence, not laundered into certainty.
+- **Untrusted-content safe.** Conflict bodies are wrapped and defanged before being concatenated into the AI prompt. A jailbroken model can produce file bytes — never actions. The red-team corpus that found and fixed this bug is part of the M2 release.
+- **MCP-native, host-agnostic.** Works with Claude Code today. Cursor, Codex, Aider, opencode, Continue, Gemini CLI — anything that speaks MCP — get the same tool surface for free.
 
-- Issues and feature requests: [GitHub Issues](https://github.com/ameyypawar/gitfix-docs/issues)
-- Security: [SECURITY.md](SECURITY.md)
-- Email: [ameypawar1237@gmail.com](mailto:ameypawar1237@gmail.com)
+## Where things live
+
+- **This repo (`gitfix-docs`)** — user-facing docs, setup guide, capability matrix, FAQ, changelog, launch posts. The repo you're in.
+- **[`ameyypawar/gfix`](https://github.com/ameyypawar/gfix)** — binary distribution surface. GitHub Releases host the actual tarballs. Install bugs go here.
+- **`ameyypawar/gitfix` source** — PRIVATE. Closed during alpha. Source access on request (see above).
+
+## Status
+
+**v0.1.0-alpha** — closed-source binary alpha. Free during alpha. Pricing decision deferred to v1.0.
+
+**Supported platforms:** macOS arm64 (verified by developer dogfood across two sessions). macOS x86_64, Linux x86_64, Linux arm64 — binaries shipped, unverified by the developer's own daily use.
+
+**Supported MCP host:** Claude Code (canary). Cursor, Codex, Aider, opencode, Continue, Gemini CLI — should work, not actively tested against in alpha.1.
+
+## Reporting issues
+
+- **Install or binary bugs** -> [github.com/ameyypawar/gfix/issues](https://github.com/ameyypawar/gfix/issues)
+- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gitfix-docs/issues)
+- **Security reports** -> ameyap007aaa@gmail.com (do not file public — coordinated disclosure preferred)
 
 ## License
 
-The contents of this repository (docs, templates, assets) are MIT-licensed. The gitfix extension itself is closed-source and distributed via the VS Code Marketplace.
+Proprietary alpha. The full 5-line EULA lives in [LICENSE.txt](LICENSE.txt). Short version: install on any number of machines for any purpose including commercial use; don't redistribute the binary or reverse-engineer it. A formal EULA supersedes this notice before v1.0.
+
+```
+gfix end-user license — v0.1.0-alpha
+
+Copyright © 2026 Amey Pawar. All rights reserved.
+
+You may install and use this binary on any number of machines for any
+purpose, including commercial use. You may not (a) reverse-engineer or
+attempt to extract source code from the binary, (b) redistribute the
+binary or any portion of it, (c) remove this notice, or (d) use it to
+develop a competing product. This software is provided as-is, with no
+warranty. A formal EULA will supersede this notice before v1.0.
+
+For licensing questions: ameyap007aaa@gmail.com
+```
