@@ -1,6 +1,8 @@
 # gfix
 
-A merge conflict resolver for the agentic-coding era. Local CLI + MCP server; resolves N-way merges with a deterministic floor (text + Mergiraf) and an AI ceiling (host-provided sampling, or BYO-key OpenAI / Anthropic / Gemini / Ollama).
+> Mergiraf for the easy half. gfix for the hard half.
+
+A merge conflict resolver for the agentic-coding era. Local CLI + MCP server. Mergiraf — invoked via subprocess to honor its GPL-3.0 boundary — handles the structural half. gfix handles the ~50% of hard semantic conflicts everyone else gives up on, with an honest AI ceiling: host-provided sampling when your MCP host advertises it, or BYO-key for Anthropic / OpenAI / Gemini / Ollama. Uses the host model's sampling when available — your tokens, your suggestions, your budget.
 
 ## Install
 
@@ -53,7 +55,7 @@ If "closed-source binary" is a deal-breaker for your environment (compliance rev
 - **Every merge leaves a pushable, immutable audit ref.** `refs/gitfix/audit/<merge_id>` is a synthetic git commit whose tree holds `audit.json` with the full final merge state. Inspect with `git show`. Share with `git push origin refs/gitfix/audit/*`. gfix never pushes — you do.
 - **Accepted resolutions cached + replayed across machines.** `refs/gitfix/rerere/<blake3>` stores every accepted resolution as a content-addressed synthetic commit. Push to any git remote (GitHub, bare, self-hosted). Your teammate's `gfix` on the same conflict triple replays your answer in <100ms with zero AI calls.
 - **Deterministic floor that never regresses.** Text merge -> Mergiraf subprocess -> AI. Mergiraf handles structural merges (TypeScript signature changes, Java method bodies, etc.) before AI is ever asked. The deterministic floor is the product; the AI is an accelerant.
-- **Honest about the AI ceiling.** Independent research (merde.ai) puts LLM resolution of complex semantic conflicts around ~50%. gfix never pretends otherwise. Suggestions come with rationale and confidence scores; nothing is auto-applied. Low-confidence suggestions are surfaced as low-confidence, not laundered into certainty.
+- **AI-grade resolution on the half Mergiraf can't.** Independent research (merde.ai) puts LLM resolution of complex semantic conflicts around ~50% — that's the half gfix is built for. Suggestions arrive with rationale and confidence scores; nothing is auto-applied. Low-confidence suggestions are surfaced as low-confidence, not laundered into certainty. The 50% you accept gets cached by rerere and replays free across machines forever — so the AI is paid once and reused.
 - **Untrusted-content safe.** Conflict bodies are wrapped and defanged before being concatenated into the AI prompt. A jailbroken model can produce file bytes — never actions. The red-team corpus that found and fixed this bug is part of the M2 release.
 - **MCP-native, host-agnostic.** Works with Claude Code today. Cursor, Codex, Aider, opencode, Continue, Gemini CLI — anything that speaks MCP — get the same tool surface for free.
 
