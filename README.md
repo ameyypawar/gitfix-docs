@@ -59,6 +59,16 @@ If "closed-source binary" is a deal-breaker for your environment (compliance rev
 - **Untrusted-content safe.** Conflict bodies are wrapped and defanged before being concatenated into the AI prompt. A jailbroken model can produce file bytes — never actions. The red-team corpus that found and fixed this bug is part of the M2 release.
 - **MCP-native, host-agnostic.** Works with Claude Code today. Cursor, Codex, Aider, opencode, Continue, Gemini CLI — anything that speaks MCP — get the same tool surface for free.
 
+## What gfix doesn't do
+
+The honest counterpart. Closed-source means honesty is the trust layer; here's the explicit list, not buried elsewhere.
+
+- **Doesn't prevent conflicts before they happen.** gfix is a resolver, not a coordinator. If you want entity-level prevention, see [Weave](https://ataraxy-labs.github.io/weave/) (open source, MIT/Apache).
+- **Doesn't push to remotes.** By design — gfix writes locally, you push `refs/gitfix/*` when you want to share them. Merges into `main` require `auto_approve=true`.
+- **Doesn't auto-merge outside Mergiraf's language allowlist.** Anything outside falls through to the text floor → AI-suggestion fallback. No silent skip; the AI path is language-agnostic.
+- **~50% hard-conflict resolution; the other 50% escalates.** Independent research (merde.ai) puts LLM resolution of complex semantic conflicts at ~50%. Rerere amortizes the half that worked; the half that didn't surfaces honestly.
+- **Doesn't auto-apply AI output.** Every accepted ai-suggestion requires an explicit `gitfix_conflict_resolve` call with `kind: "ai-suggestion"`. gfix never silently writes model output.
+
 ## Where things live
 
 - **This repo (`gitfix-docs`)** — user-facing docs, setup guide, capability matrix, FAQ, changelog, launch posts. The repo you're in.
