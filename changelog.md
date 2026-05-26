@@ -2,6 +2,29 @@
 
 All notable changes to `gfix`. Versioning: `MAJOR.MINOR.PATCH-prerelease`. Alpha releases use `-alpha`, `-alpha.2`, etc.
 
+## v0.1.0-alpha.3 (2026-05-26)
+
+Hardening release. Two PRs landed: AI provider robustness (#101) and env-clear subprocess hardening (#102). Test count 120 -> 122.
+
+**AI hardening (PR #101).** Closes #35, #42, #46.
+
+- #35: `response_format: json_object` was unconditionally set in OpenAI requests. The o1/o3 reasoning model families reject it with HTTP 400. Now omitted for non-GPT-4/GPT-3.5 models, consistent with how Anthropic and Ollama callers already behave.
+- #42: `pick_provider` had 70 lines of copy-paste per provider arm. Collapsed into a `KEY_PROVIDERS` lookup table — same precedence logic, half the code.
+- #46: `ConflictGetResponse.ai_suggestion` was typed as `serde_json::Value`, causing the absence-of-suggestion case to serialize as `null` or `{}` rather than a typed `None`. Retyped as `Option<AiSuggestion>`; `null` now serializes correctly and is handled consistently by MCP clients.
+
+**env_clear subprocess hardening (PR #102).** Closes #70 (P0), #72, #97, #99.
+
+- Every git and subprocess invocation now routes through `gitfix_command()` — `env_clear()` plus an 8-key allowlist (`PATH`, `HOME`, `LANG`, `LC_ALL`, `TZ`, `TMPDIR`, `USER`, `LOGNAME`). Removes the last four parent-env leak sites identified after the #48 P0 fix.
+- New regression tests: `finalize_does_not_inherit_hostile_git_dir`, `lookup_does_not_inherit_hostile_git_dir`.
+
+**Tests.** 120 -> 122 passing.
+
+**Install / upgrade.**
+
+    brew upgrade gfix
+
+Release artifacts: https://github.com/ameyypawar/gfix/releases/tag/v0.1.0-alpha.3
+
 ## v0.1.0-alpha — release date TBD, ships when ready
 
 First public alpha. Closed-source binary distribution. Free during alpha.
