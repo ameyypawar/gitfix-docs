@@ -28,7 +28,7 @@ Homebrew installs to `/opt/homebrew/bin/gfix` on Apple Silicon, `/usr/local/bin/
 ### Linux + macOS (curl)
 
 ```sh
-curl -fsSL https://gitfix.pro/install | sh
+curl -fsSL https://gfix.space/install | sh
 ```
 
 Installs to `/usr/local/bin/gfix` by default. Override with `PREFIX=/some/other/path`. The script verifies SHA256 against the published manifest before installing; mismatch exits non-zero.
@@ -285,5 +285,5 @@ Then `mergiraf --version` should print a version, and gfix will route conflicts 
 - **[capability-matrix.md](capability-matrix.md)** — what gfix can and can't do today, with concrete artifacts you can fetch and inspect.
 - **[posts/2026-06-launch.md](posts/2026-06-launch.md)** — the M2 retrospective; the dogfood story behind alpha.1.
 - **Install or binary bugs** -> [github.com/ameyypawar/gfix/issues](https://github.com/ameyypawar/gfix/issues)
-- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gitfix-docs/issues)
+- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gfix-docs/issues)
 - **Security reports** -> ameyap007aaa@gmail.com (do not file public — coordinated disclosure preferred)

@@ -141,7 +141,7 @@ If Mergiraf isn't installed at all, gfix gracefully falls back to text merge for
 ## Where do I report bugs?
 
 - **Install or binary bugs** -> [github.com/ameyypawar/gfix/issues](https://github.com/ameyypawar/gfix/issues)
-- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gitfix-docs/issues)
+- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gfix-docs/issues)
 - **Security reports** -> ameyap007aaa@gmail.com (do not file public — coordinated disclosure preferred)
 
 For binary bugs, the most useful repro includes: `gfix --version` output, OS + arch, the exact command + the MCP tool call that misbehaved, and the audit ref (if `gitfix_merge_apply` ran) — that ref's `audit.json` is the most compact way to share what gfix saw.
