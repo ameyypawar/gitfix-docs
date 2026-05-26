@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Read the FAQ first
-    url: https://github.com/ameyypawar/gitfix-docs/blob/main/faq.md
+    url: https://github.com/ameyypawar/gfix-docs/blob/main/faq.md
     about: Most common questions are already answered.
   - name: Report a product bug (not a docs bug)
     url: https://github.com/ameyypawar/gfix/issues/new/choose

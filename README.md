@@ -13,7 +13,7 @@ brew install ameyypawar/gfix/gfix
 ```
 
 ```sh
-curl -fsSL https://gitfix.pro/install | sh
+curl -fsSL https://gfix.space/install | sh
 ```
 
 ```sh
@@ -71,9 +71,9 @@ The honest counterpart. Closed-source means honesty is the trust layer; here's t
 
 ## Where things live
 
-- **This repo (`gitfix-docs`)** — user-facing docs, setup guide, capability matrix, FAQ, changelog, launch posts. The repo you're in.
+- **This repo (`gfix-docs`)** — user-facing docs, setup guide, capability matrix, FAQ, changelog, launch posts. The repo you're in.
 - **[`ameyypawar/gfix`](https://github.com/ameyypawar/gfix)** — binary distribution surface. GitHub Releases host the actual tarballs. Install bugs go here.
-- **`ameyypawar/gitfix` source** — PRIVATE. Closed during alpha. Source access on request (see above).
+- **`ameyypawar/core-merge-engine` source** — PRIVATE. Closed during alpha. Source access on request (see above).
 
 ## Status
 
@@ -86,7 +86,7 @@ The honest counterpart. Closed-source means honesty is the trust layer; here's t
 ## Reporting issues
 
 - **Install or binary bugs** -> [github.com/ameyypawar/gfix/issues](https://github.com/ameyypawar/gfix/issues)
-- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gitfix-docs/issues)
+- **Docs typos, missing platform notes, capability matrix fixes** -> [this repo's Issues](https://github.com/ameyypawar/gfix-docs/issues)
 - **Security reports** -> ameyap007aaa@gmail.com (do not file public — coordinated disclosure preferred)
 
 ## License

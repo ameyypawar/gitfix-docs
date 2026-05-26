@@ -13,7 +13,7 @@ body:
     attributes:
       label: Which doc
       description: File path in this repo (e.g. setup.md) or full URL.
-      placeholder: setup.md or https://github.com/ameyypawar/gitfix-docs/blob/main/setup.md#install
+      placeholder: setup.md or https://github.com/ameyypawar/gfix-docs/blob/main/setup.md#install
     validations:
       required: true
 
